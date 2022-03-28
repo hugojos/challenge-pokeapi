@@ -5,9 +5,7 @@ import { usePokemonContext } from "./context";
 export const Types = () => {
   const { pokemon } = usePokemonContext();
 
-  if (pokemon === undefined) return null;
-
-  const { data } = useFetchPokemonDetail(pokemon.name);
+  const { data } = useFetchPokemonDetail(pokemon!.name);
 
   return (
     <div>
@@ -26,9 +24,7 @@ export const Types = () => {
 export const Pokedex = () => {
   const { pokemon } = usePokemonContext();
 
-  if (pokemon === undefined) return null;
-
-  const { data } = useFetchPokemonSpecies(pokemon.name);
+  const { data } = useFetchPokemonSpecies(pokemon!.name);
 
   return (
     <span
