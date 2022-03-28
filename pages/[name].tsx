@@ -78,10 +78,9 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
     await fetch(species.evolution_chain.url)
   ).json();
 
-  console.log(species.evolution_chain.url);
-
   const results = await Promise.all(
     chainToArray(evolutionChain.chain).map((evolution: any) => {
+      // convert chainEvolution to array and fetch each pokemon detail
       const urlSegments = evolution.url.split("/");
       const id = urlSegments[urlSegments.length - 2];
       return api(endpoints.pokemon({ name: id }));
@@ -89,15 +88,15 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
   );
 
   const evolutions: PokemonDetail[] = results
-    .map((result: PokemonDetail) => {
+    .map((result) => {
       const { name, sprites } = result;
       return { name, sprites };
     })
-    .filter((pokemon: PokemonDetail) => pokemon.name !== params?.name);
+    .filter((pokemon) => pokemon.name !== params?.name); // remove current pokemon
 
   const description = species.flavor_text_entries.find(
     (entries) => entries.language.name === "es"
-  )?.flavor_text;
+  )?.flavor_text; // get description in es
 
   return {
     props: {
@@ -110,6 +109,7 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
   };
 }
 
+//move to helper
 const chainToArray = (data: Chain, acc: any = []) => {
   acc.push(data.species);
   data.evolves_to?.forEach((item) => {

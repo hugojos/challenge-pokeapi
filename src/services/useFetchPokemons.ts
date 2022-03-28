@@ -17,7 +17,7 @@ const useFetchPokemons = (options: Options = {}) => {
   return useInfiniteQuery<Pagination<Pokemon>>(
     "pokemons",
     ({ pageParam = 0 }) =>
-      api(endpoints.pokemons({ limit: 9, offset: pageParam * 9 })),
+      api(endpoints.pokemons({ limit: 9, offset: pageParam * 9 })), // move limit to .env
     {
       getNextPageParam: (lastPage, pages) => {
         return pages.length;
