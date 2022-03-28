@@ -12,4 +12,8 @@ export interface PokemonDetail {
   id?: number;
   types?: Type[];
   name: string;
+  species?: {
+    name: string;
+    url: string;
+  };
 }

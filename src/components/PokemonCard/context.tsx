@@ -1,16 +1,16 @@
 import { createContext, useContext, useState } from "react";
-import { Pokemon } from "src/services/useFetchPokemons";
+import { PokemonDetail } from "src/types/PokemonDetail";
 
 interface Values {
-  pokemon?: Pokemon;
-  setPokemon?: (value: Pokemon) => void;
+  pokemon?: PokemonDetail;
+  setPokemon?: (value: PokemonDetail) => void;
 }
 
 const PokemonContext = createContext<Values>({});
 
 interface Props {
   children: JSX.Element[] | JSX.Element;
-  initialValue: Pokemon;
+  initialValue: PokemonDetail | undefined;
 }
 
 export const PokemonProvider = ({ children, initialValue }: Props) => {

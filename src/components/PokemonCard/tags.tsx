@@ -1,15 +1,12 @@
-import useFetchPokemonDetail from "src/services/useFetchPokemonDetail";
-import useFetchPokemonSpecies from "src/services/useFetchPokemonSpecies";
+import { useQuery } from "react-query";
 import { usePokemonContext } from "./context";
 
 export const Types = () => {
   const { pokemon } = usePokemonContext();
 
-  const { data } = useFetchPokemonDetail(pokemon!.name);
-
   return (
     <div>
-      {data?.types.map((item) => (
+      {pokemon?.types?.map((item) => (
         <span
           key={item.type.name}
           className="border border-gray-900 mt-1 mr-1 px-1"
@@ -24,7 +21,9 @@ export const Types = () => {
 export const Pokedex = () => {
   const { pokemon } = usePokemonContext();
 
-  const { data } = useFetchPokemonSpecies(pokemon!.name);
+  const { data } = useQuery([pokemon?.name, "species"], async () => {
+    return await (await fetch(pokemon!.species!.url)).json();
+  });
 
   return (
     <span

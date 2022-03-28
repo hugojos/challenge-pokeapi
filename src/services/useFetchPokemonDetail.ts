@@ -1,20 +1,7 @@
 import { useQuery } from "react-query";
 import { api } from "src/api";
 import { endpoints } from "src/config/endpoints";
-
-interface Type {
-  slot: number;
-  type: {
-    name: string;
-  };
-}
-
-interface PokemonDetail {
-  sprites: {
-    front_default: string;
-  };
-  types: Type[];
-}
+import { PokemonDetail } from "src/types/PokemonDetail";
 
 const useFetchPokemonDetail = (name: string) =>
   useQuery<PokemonDetail>(["pokemon", name], () =>

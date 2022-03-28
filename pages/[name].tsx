@@ -66,22 +66,26 @@ export async function getStaticPaths() {
 export async function getStaticProps(ctx: GetStaticPropsContext) {
   const { params } = ctx;
 
-  const { sprites }: PokemonDetail = await api(
+  const pokemonDetail: PokemonDetail = await api(
     endpoints.pokemon({ name: params?.name + "" })
   );
 
-  const species: PokemonSpecies = await api(
-    endpoints.pokemonSpecies({ name: params?.name + "" })
-  );
+  const species: PokemonSpecies = await (
+    await fetch(pokemonDetail.species!.url)
+  ).json();
 
   const evolutionChain: EvolutionChain = await (
     await fetch(species.evolution_chain.url)
   ).json();
 
+  console.log(species.evolution_chain.url);
+
   const results = await Promise.all(
-    chainToArray(evolutionChain.chain).map((evolution: any) =>
-      api(endpoints.pokemon({ name: evolution.name }))
-    )
+    chainToArray(evolutionChain.chain).map((evolution: any) => {
+      const urlSegments = evolution.url.split("/");
+      const id = urlSegments[urlSegments.length - 2];
+      return api(endpoints.pokemon({ name: id }));
+    })
   );
 
   const evolutions: PokemonDetail[] = results
@@ -97,7 +101,7 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
 
   return {
     props: {
-      image: sprites?.front_default,
+      image: pokemonDetail.sprites?.front_default,
       name: params?.name,
       habitat: species.habitat?.name ?? null,
       description,

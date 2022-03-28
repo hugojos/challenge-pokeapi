@@ -19,7 +19,7 @@ const PokemonCard = ({ pokemon, children, className, imgClassName }: Props) => {
   if (isLoading) return null;
 
   return (
-    <PokemonProvider initialValue={pokemon}>
+    <PokemonProvider initialValue={data}>
       <div
         className={`text-left ${className}`}
         onClick={() => router.push(`/${pokemon.name}`)}
@@ -28,7 +28,7 @@ const PokemonCard = ({ pokemon, children, className, imgClassName }: Props) => {
           <div className="absolute top-1 left-1">{children}</div>
           <img
             className={`w-full ${imgClassName}`}
-            src={data?.sprites.front_default}
+            src={data?.sprites?.front_default}
             alt={pokemon.name}
           />
         </div>
